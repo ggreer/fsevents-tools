@@ -6,13 +6,15 @@ then
     exit 1
 fi
 
-PATH=$1
+WATCH_PATH=$1
 shift
 COMMAND=$@
 
+echo "Watching $WATCH_PATH"
+
 while true
 do
-    notifywait $PATH
+    notifywait $WATCH_PATH
     echo "Running $COMMAND"
     $COMMAND
 done
