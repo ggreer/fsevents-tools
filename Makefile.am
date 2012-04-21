@@ -2,8 +2,7 @@ ACLOCAL_AMFLAGS = ${ACLOCAL_FLAGS}
 
 bin_PROGRAMS = notifywait
 notifywait_SOURCES = notifywait.c
-notifywaitdir = $prefix/bin
-notifywait_SCRIPTS = notify_loop
+dist_bin_SCRIPTS = notify_loop
 
 man_MANS = doc/notifywait.1
 
