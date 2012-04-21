@@ -5,7 +5,7 @@ notifywait_SOURCES = notifywait.c
 notifywaitdir = $prefix/bin
 notifywait_SCRIPTS = notify_loop
 
-#man_MANS = doc/fseventstools.1
+man_MANS = doc/notifywait.1
 
 # Uncomment this line to output gprof profiling info.
 #CFLAGS=-pg
