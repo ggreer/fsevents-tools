@@ -1,0 +1,13 @@
+#!/bin/sh
+
+if [ $# -lt 2 ]
+then
+    echo "Usage: $0 path destination"
+    exit 1
+fi
+
+WATCH_PATH=$1
+shift
+DEST=$@
+
+notify_loop $WATCH_PATH rsync -avz $WATCH_PATH $DEST
