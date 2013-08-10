@@ -6,8 +6,8 @@ then
     exit 1
 fi
 
-WATCH_PATH=$1
+WATCH_PATH="$1"
 shift
-DEST=$@
+DEST=("$@")
 
-notify_loop $WATCH_PATH rsync -avz $WATCH_PATH $DEST
+notify_loop "$WATCH_PATH" rsync -avz "$WATCH_PATH" "${DEST[@]}"
