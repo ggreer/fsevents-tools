@@ -27,8 +27,12 @@ int main(int argc, char **argv) {
         exit(1);
     }
 
-    CFStringRef cfs_path = CFStringCreateWithCString(NULL, argv[1], kCFStringEncodingUTF8); /* pretty sure I'm leaking this */
-    CFArrayRef paths = CFArrayCreate(NULL, (const void **)&cfs_path, 1, NULL); /* ditto */
+    CFMutableArrayRef paths = CFArrayCreateMutable(NULL, argc, NULL);
+    for(int i=1; i<argc; i++) {
+        CFStringRef cfs_path = CFStringCreateWithCString(NULL, argv[i], kCFStringEncodingUTF8); /* pretty sure I'm leaking this */
+        CFArrayAppendValue(paths, cfs_path); /* ditto */
+    }
+
     void *cb_data = NULL;
     FSEventStreamRef stream;
 
