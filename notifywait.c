@@ -7,8 +7,14 @@
 #include <CoreFoundation/CoreFoundation.h>
 #include <CoreServices/CoreServices.h>
 
-void event_cb(ConstFSEventStreamRef streamRef, void *cb_data, size_t count, void *paths,
-              const FSEventStreamEventFlags flags[], const FSEventStreamEventId ids[]) {
+#define UNUSED(v) v __attribute__((__unused__))
+
+void event_cb(ConstFSEventStreamRef UNUSED(streamRef),
+              void UNUSED(*cb_data),
+              size_t count,
+              void *paths,
+              const FSEventStreamEventFlags flags[],
+              const FSEventStreamEventId ids[]) {
     size_t i;
 
     for (i = 0; i < count; i++) {
@@ -23,12 +29,14 @@ void event_cb(ConstFSEventStreamRef streamRef, void *cb_data, size_t count, void
 
 int main(int argc, char **argv) {
     if (argc < 2) {
-        printf("No path to watch specified\n");
+        printf("No path specified\n");
+        printf("Usage: %s path/to/watch\n", argv[0]);
         exit(1);
     }
 
     CFMutableArrayRef paths = CFArrayCreateMutable(NULL, argc, NULL);
-    for(int i=1; i<argc; i++) {
+    int i;
+    for(i = 1; i < argc; i++) {
         CFStringRef cfs_path = CFStringCreateWithCString(NULL, argv[i], kCFStringEncodingUTF8); /* pretty sure I'm leaking this */
         CFArrayAppendValue(paths, cfs_path); /* ditto */
     }
