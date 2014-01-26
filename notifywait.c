@@ -23,7 +23,7 @@ void event_cb(ConstFSEventStreamRef streamRef,
               const FSEventStreamEventFlags flags[],
               const FSEventStreamEventId ids[]) {
     size_t i;
-    file_paths_t* file_paths = ((FSEventStreamContext*)ctx)->info;
+    file_paths_t* file_paths = (file_paths_t*)ctx;
     for (i = 0; i < count; i++) {
         char *path = ((char**)paths)[i];
         /* flags are unsigned long, IDs are uint64_t */
@@ -36,6 +36,7 @@ void event_cb(ConstFSEventStreamRef streamRef,
                 /* TODO: VVV*/
                 exit(0);
             } else {
+                printf("%s != %s\n", file_path, path);
                 count--;
             }
         }
@@ -46,6 +47,7 @@ void event_cb(ConstFSEventStreamRef streamRef,
         exit(0);
     }
 }
+
 
 char *dirname(const char *path) {
     char *d_name = strdup(path);
