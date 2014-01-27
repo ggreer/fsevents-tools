@@ -9,6 +9,7 @@
 #include <CoreFoundation/CoreFoundation.h>
 #include <CoreServices/CoreServices.h>
 
+#include "config.h"
 
 typedef struct {
     size_t len;
