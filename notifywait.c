@@ -23,7 +23,7 @@ void add_file(file_paths_t* file_paths, char *path) {
         file_paths->size = file_paths->size * 1.5;
         file_paths->paths = realloc(file_paths->paths, file_paths->size * sizeof(char*));
     }
-    file_paths->paths[file_paths->len] = path;
+    file_paths->paths[file_paths->len] = strdup(path);
     file_paths->len++;
 }
 
@@ -70,13 +70,14 @@ int main(int argc, char **argv) {
         exit(1);
     }
 
-    int i;
-    int rv;
-    char *dir_path;
-    char *path;
-    struct stat s;
     CFMutableArrayRef paths = CFArrayCreateMutable(NULL, argc, NULL);
     CFStringRef cfs_path;
+    char *dir_path;
+    char *file_name;
+    char *path;
+    int i;
+    int rv;
+    struct stat s;
 
     file_paths_t *file_paths = malloc(sizeof(file_paths_t));
     file_paths->len = 0;
@@ -84,16 +85,25 @@ int main(int argc, char **argv) {
     file_paths->paths = malloc(file_paths->size * sizeof(char*));
 
     for (i = 1; i < argc; i++) {
+        dir_path = NULL;
         path = realpath(argv[i], NULL);
         if (path == NULL) {
-            dir_path = realpath(dirname(argv[i]), NULL);
+            path = dirname(argv[i]);
+            if (strcmp(path, ".") == 0) {
+                /* realpath(".") returns a useless path like /User */
+                dir_path = realpath("./", NULL);
+            } else {
+                dir_path = realpath(path, NULL);
+            }
             if (dir_path == NULL) {
-                fprintf(stderr, "Error %i in realpath(%s): %s\n", errno, argv[i], strerror(errno));
+                fprintf(stderr, "Error %i in realpath(\"%s\"): %s\n", errno, path, strerror(errno));
                 exit(1);
             }
-            asprintf(&path, "%s/%s", dir_path, basename(path));
+            file_name = basename(argv[i]);
+            asprintf(&path, "%s/%s", dir_path, file_name);
         }
 
+        /* At this point, path should be an absolute path. */
         printf("Path is %s\n", path);
         rv = stat(path, &s);
         if (rv < 0) {
@@ -101,17 +111,16 @@ int main(int argc, char **argv) {
                 fprintf(stderr, "Error %i stat()ing %s: %s\n", errno, path, strerror(errno));
                 goto cleanup;
             }
-            /* File doesn't exist. Watch parent dir instead, since a file or dir might be created. */
+            /* File doesn't exist yet. Watch parent dir instead. */
             s.st_mode = S_IFREG;
         }
 
         if(s.st_mode & S_IFREG) {
             /* FSEvents can only watch directories, not files. Watch parent dir. */
             dir_path = dirname(path);
-            char *file_name = basename(path);
+            file_name = basename(path);
             asprintf(&path, "%s/%s", dir_path, file_name);
             add_file(file_paths, path);
-            free(file_name);
         } else if (s.st_mode & S_IFDIR) {
             /* Yay a directory! */
             dir_path = path;
@@ -121,10 +130,14 @@ int main(int argc, char **argv) {
         }
 
         cfs_path = CFStringCreateWithCString(NULL, dir_path, kCFStringEncodingUTF8);
-        printf("Watching %s\n", dir_path);
+        printf("Watching %s\n", path);
         CFArrayAppendValue(paths, cfs_path); /* pretty sure I'm leaking this */
 
         cleanup:;
+        if (dir_path != path) {
+            free(dir_path);
+        }
+        free(path);
     }
 
     FSEventStreamContext ctx = {
