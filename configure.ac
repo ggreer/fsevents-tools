@@ -1,4 +1,4 @@
-AC_INIT([fsevents-tools], [0.2pre])
+AC_INIT([fsevents-tools], [0.2.0])
 AC_PROG_CC
 AC_PREREQ([2.59])
 
