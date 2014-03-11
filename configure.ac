@@ -1,6 +1,6 @@
 AC_INIT(
     [fsevents-tools],
-    [0.2.0],
+    [0.2.1],
     [https://github.com/ggreer/fsevents-tools/issues],
     [fsevents-tools],
     [http://geoff.greer.fm/fsevents/])
