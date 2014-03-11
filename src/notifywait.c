@@ -10,12 +10,7 @@
 #include <CoreServices/CoreServices.h>
 
 #include "config.h"
-
-typedef struct {
-    size_t len;
-    size_t size;
-    char **paths;
-} file_paths_t;
+#include "notifywait.h"
 
 
 void add_file(file_paths_t* file_paths, char *path) {
