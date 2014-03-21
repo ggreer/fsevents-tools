@@ -11,7 +11,7 @@ typedef struct {
 } file_paths_t;
 
 
-void add_file(file_paths_t* file_paths, char *path);
+void add_file(file_paths_t *file_paths, char *path);
 
 void event_cb(ConstFSEventStreamRef streamRef,
               void *ctx,

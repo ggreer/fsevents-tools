@@ -13,11 +13,11 @@
 #include "notifywait.h"
 
 
-void add_file(file_paths_t* file_paths, char *path) {
+void add_file(file_paths_t *file_paths, char *path) {
     printf("adding %s length %lu size %lu\n", path, file_paths->len, file_paths->size);
     if (file_paths->len == file_paths->size) {
         file_paths->size = file_paths->size * 1.5;
-        file_paths->paths = realloc(file_paths->paths, file_paths->size * sizeof(char*));
+        file_paths->paths = realloc(file_paths->paths, file_paths->size * sizeof(char *));
     }
     file_paths->paths[file_paths->len] = strdup(path);
     file_paths->len++;
@@ -31,12 +31,12 @@ void event_cb(ConstFSEventStreamRef streamRef,
               const FSEventStreamEventFlags flags[],
               const FSEventStreamEventId ids[]) {
 
-    file_paths_t* file_paths = (file_paths_t*)ctx;
+    file_paths_t *file_paths = (file_paths_t *)ctx;
     size_t i;
     size_t ignored_paths = 0;
 
     for (i = 0; i < count; i++) {
-        char *path = ((char**)paths)[i];
+        char *path = ((char **)paths)[i];
         /* flags are unsigned long, IDs are uint64_t */
         printf("Change %llu in %s, flags %lu\n", ids[i], path, (long)flags[i]);
         size_t j;
@@ -78,7 +78,7 @@ int main(int argc, char **argv) {
     file_paths_t *file_paths = malloc(sizeof(file_paths_t));
     file_paths->len = 0;
     file_paths->size = 2;
-    file_paths->paths = malloc(file_paths->size * sizeof(char*));
+    file_paths->paths = malloc(file_paths->size * sizeof(char *));
 
     for (i = 1; i < argc; i++) {
         dir_path = NULL;
@@ -111,7 +111,7 @@ int main(int argc, char **argv) {
             s.st_mode = S_IFREG;
         }
 
-        if(s.st_mode & S_IFREG) {
+        if (s.st_mode & S_IFREG) {
             /* FSEvents can only watch directories, not files. Watch parent dir. */
             dir_path = dirname(path);
             file_name = basename(path);
@@ -129,7 +129,8 @@ int main(int argc, char **argv) {
         printf("Watching %s\n", path);
         CFArrayAppendValue(paths, cfs_path); /* pretty sure I'm leaking this */
 
-        cleanup:;
+    cleanup:
+        ;
         if (dir_path != path) {
             free(dir_path);
         }
@@ -153,5 +154,5 @@ int main(int argc, char **argv) {
     CFRunLoopRun();
     /* We never get here */
 
-    return(0);
+    return (0);
 }
