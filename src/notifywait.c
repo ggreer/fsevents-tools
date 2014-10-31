@@ -14,7 +14,7 @@
 
 
 void add_file(file_paths_t *file_paths, char *path) {
-    printf("adding %s length %lu size %lu\n", path, file_paths->len, file_paths->size);
+    printf("adding %s length %lu size %lu\n", path, (unsigned long)file_paths->len, (unsigned long)file_paths->size);
     if (file_paths->len == file_paths->size) {
         file_paths->size = file_paths->size * 1.5;
         file_paths->paths = realloc(file_paths->paths, file_paths->size * sizeof(char *));
