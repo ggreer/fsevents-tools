@@ -10,3 +10,6 @@ EXTRA_DIST = LICENSE NOTICE README.md doc/notifywait.1
 
 # Uncomment this line to output gprof profiling info.
 #CFLAGS=-pg
+
+test: notifywait
+	cram -v tests/*.t

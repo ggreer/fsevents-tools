@@ -1,0 +1,1 @@
+alias notifywait="$TESTDIR/../notifywait"
