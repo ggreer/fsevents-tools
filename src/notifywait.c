@@ -45,6 +45,8 @@ void event_cb(ConstFSEventStreamRef streamRef,
             printf("%s %s\n", file_path, path);
             if (strcmp(file_path, path) == 0) {
                 printf("File %s changed.\n", file_path);
+                FSEventStreamStop((FSEventStreamRef)streamRef);
+                FSEventStreamScheduleWithRunLoop(streamRef, CFRunLoopGetCurrent(), kCFRunLoopDefaultMode);
                 exit(0);
             }
         }
@@ -54,6 +56,7 @@ void event_cb(ConstFSEventStreamRef streamRef,
     if (count > ignored_paths) {
         /* OS X occasionally leaks event streams. Manually stop the stream just to make sure. */
         FSEventStreamStop((FSEventStreamRef)streamRef);
+        FSEventStreamScheduleWithRunLoop(streamRef, CFRunLoopGetCurrent(), kCFRunLoopDefaultMode);
         exit(0);
     }
 }
