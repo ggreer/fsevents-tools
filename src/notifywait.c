@@ -23,7 +23,6 @@ void add_file(file_paths_t *file_paths, char *path) {
     file_paths->len++;
 }
 
-
 void event_cb(ConstFSEventStreamRef streamRef,
               void *ctx,
               size_t count,
@@ -38,27 +37,30 @@ void event_cb(ConstFSEventStreamRef streamRef,
     for (i = 0; i < count; i++) {
         char *path = ((char **)paths)[i];
         /* flags are unsigned long, IDs are uint64_t */
-        printf("Change %llu in %s, flags %lu\n", ids[i], path, (long)flags[i]);
+        printf("Change %llu in %s, flags %lu", ids[i], path, (long)flags[i]);
         size_t j;
         for (j = 0; j < file_paths->len; j++) {
             char *file_path = file_paths->paths[j];
-            printf("%s %s\n", file_path, path);
             if (strcmp(file_path, path) == 0) {
-                printf("File %s changed.\n", file_path);
-                FSEventStreamStop((FSEventStreamRef)streamRef);
-                FSEventStreamScheduleWithRunLoop(streamRef, CFRunLoopGetCurrent(), kCFRunLoopDefaultMode);
-                exit(0);
+                printf(" - matched %s, notifying\n", file_path);
+            } else {
+                printf(" - ignoring\n");
+                ignored_paths++;
             }
         }
-        /* TODO: this logic is wrong */
-        ignored_paths++;
     }
-    if (count > ignored_paths) {
-        /* OS X occasionally leaks event streams. Manually stop the stream just to make sure. */
+    /* Shut down if we aren't watching for files, or if files were changed that we 
+     * didn't ignore.
+     */
+    if (file_paths->len == 0) {
+        printf(" - matched directory, notifying\n");
+    }
+    if (file_paths->len == 0 || count > ignored_paths) {
         FSEventStreamStop((FSEventStreamRef)streamRef);
-        FSEventStreamScheduleWithRunLoop(streamRef, CFRunLoopGetCurrent(), kCFRunLoopDefaultMode);
+        FSEventStreamRelease((FSEventStreamRef)streamRef);
         exit(0);
     }
+
 }
 
 
