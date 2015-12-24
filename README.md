@@ -1,5 +1,9 @@
 # FSEvents Tools
 
+[![Build Status](https://travis-ci.org/ggreer/fsevents-tools.svg?branch=master)](https://travis-ci.org/ggreer/fsevents-tools)
+
+[![Floobits Status](https://floobits.com/ggreer/fsevents-tools.svg)](https://floobits.com/ggreer/fsevents-tools/redirect)
+
 Command-line tools and scripts that use OS X's [FSEvents](http://en.wikipedia.org/wiki/FSEvents) API. Mostly useful for watching a directory and react to changes in it.
 
 
