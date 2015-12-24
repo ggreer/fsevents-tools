@@ -1,0 +1,25 @@
+language: c
+
+os:
+  - osx
+
+branches:
+  only:
+    - master
+
+notifications:
+  email:
+    - geoff@greer.fm
+
+compiler:
+  - clang
+  - gcc
+
+before_install:
+  - brew install pkg-config
+
+before_script:
+  - sudo pip install cram
+
+script:
+  - ./autogen.sh && make test
