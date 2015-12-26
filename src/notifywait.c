@@ -29,7 +29,6 @@ void event_cb(ConstFSEventStreamRef streamRef,
               void *paths,
               const FSEventStreamEventFlags flags[],
               const FSEventStreamEventId ids[]) {
-
     file_paths_t *file_paths = (file_paths_t *)ctx;
     size_t i;
     size_t ignored_paths = 0;
@@ -60,7 +59,6 @@ void event_cb(ConstFSEventStreamRef streamRef,
         FSEventStreamRelease((FSEventStreamRef)streamRef);
         exit(0);
     }
-
 }
 
 
@@ -134,8 +132,7 @@ int main(int argc, char **argv) {
         printf("Watching %s\n", path);
         CFArrayAppendValue(paths, cfs_path); /* pretty sure I'm leaking this */
 
-    cleanup:
-        ;
+    cleanup:;
         if (dir_path != path) {
             free(dir_path);
         }
