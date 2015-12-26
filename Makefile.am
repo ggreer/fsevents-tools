@@ -13,3 +13,8 @@ EXTRA_DIST = LICENSE NOTICE README.md doc/notifywait.1
 
 test: notifywait
 	cram -v tests/*.t
+if HAS_CLANG_FORMAT
+	CLANG_FORMAT=${CLANG_FORMAT} ./format.sh test
+else
+	@echo "clang-format is not available. Skipped clang-format test."
+endif
