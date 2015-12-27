@@ -4,7 +4,9 @@
 
 [![Floobits Status](https://floobits.com/ggreer/fsevents-tools.svg)](https://floobits.com/ggreer/fsevents-tools/redirect)
 
-Command-line tools and scripts that use OS X's [FSEvents](http://en.wikipedia.org/wiki/FSEvents) API. Mostly useful for watching a directory and react to changes in it.
+## Description
+
+Command-line tools and scripts that use OS X's [FSEvents](http://en.wikipedia.org/wiki/FSEvents) API. Mostly useful for watching a directory and reacting to changes in it.
 
 
 ## Building
