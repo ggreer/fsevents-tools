@@ -10,4 +10,4 @@ WATCH_PATH="$1"
 shift
 DEST=("$@")
 
-notify_loop "$WATCH_PATH" rsync -avz "$WATCH_PATH" "${DEST[@]}"
+notifyloop "$WATCH_PATH" rsync -avz "$WATCH_PATH" "${DEST[@]}"

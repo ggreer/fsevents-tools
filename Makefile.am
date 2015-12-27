@@ -2,7 +2,7 @@ ACLOCAL_AMFLAGS = ${ACLOCAL_FLAGS}
 
 bin_PROGRAMS = notifywait
 notifywait_SOURCES = src/notifywait.c src/notifywait.h
-dist_bin_SCRIPTS = auto_rsync notify_loop
+dist_bin_SCRIPTS = autorsync notifyloop
 
 dist_man_MANS = doc/notifywait.1
 

@@ -22,11 +22,11 @@ Alert if any files in a directory are changed.
 
 Automatically rsync files to a remote server if any of them are changed.
 
-    auto_rsync . 192.168.1.127:/var/www
+    autorsync . 192.168.1.127:/var/www
 
 Same as above, but don't copy .pyc files.
 
-    notify_loop ~/code/directory rsync -avz --exclude="*.pyc" ~/code/directory/ server.example.com:/stuff/
+    notifyloop ~/code/directory rsync -avz --exclude="*.pyc" ~/code/directory/ server.example.com:/stuff/
 
 
 ## Related software

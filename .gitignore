@@ -21,5 +21,4 @@ Makefile
 Makefile.in
 missing
 notifywait
-notifywatch
 stamp-h1
