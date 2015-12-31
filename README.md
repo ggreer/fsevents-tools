@@ -8,12 +8,7 @@
 
 Command-line tools and scripts that use OS X's [FSEvents](http://en.wikipedia.org/wiki/FSEvents) API. Mostly useful for watching a directory and reacting to changes in it.
 
-
-## Building
-
-In addition to the typical automake/autoconf/make, you'll need pkg-config. `brew install pkg-config` should do the trick.
-
-Once you have all the dependencies, just run `./autogen.sh` and `make install`.
+[This post](http://geoff.greer.fm/2015/12/25/fsevents-tools-watch-a-directory-for-changes/) explains why I made this and includes more usage examples.
 
 
 ## Usage examples
@@ -29,6 +24,28 @@ Automatically rsync files to a remote server if any of them are changed.
 Same as above, but don't copy .pyc files.
 
     notifyloop ~/code/directory rsync -avz --exclude="*.pyc" ~/code/directory/ server.example.com:/stuff/
+
+
+## Building from source
+
+### Building master
+
+In addition to the standard automake/autoconf/make, you'll need pkg-config. `brew install pkg-config` should do the trick.
+
+Once you have all the dependencies, run `./autogen.sh` and `make install`.
+
+
+### Building a release tarball
+
+GPG-signed releases are available [here](http://geoff.greer.fm/fsevents).
+
+Building release tarballs requires the same dependencies, except for automake and pkg-config. Once you've installed the dependencies, run:
+
+    ./configure
+    make
+    make install
+
+Depending on permissions, `make install` may require `sudo`.
 
 
 ## Related software
