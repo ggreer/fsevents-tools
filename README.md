@@ -17,6 +17,21 @@ Alert if any files in a directory are changed.
 
     notifywait /path/; echo "\007"
 
+
+Rebuild LESS when anything in `styles` changes. Assuming you have a script similar to this `rebuild_less.sh`:
+
+    #!/bin/bash
+    for less_file in styles/*.less
+    do
+      css_file=`echo $less_file | sed -E "s/.less//"`
+      lessc $less_file $css_file.css
+    done
+
+...just run:
+
+    notifyloop styles ./rebuild_less.sh
+
+
 Automatically rsync files to a remote server if any of them are changed.
 
     autorsync . 192.168.1.127:/var/www
