@@ -36,9 +36,14 @@ Automatically rsync files to a remote server if any of them are changed.
 
     autorsync . 192.168.1.127:/var/www
 
-Same as above, but don't copy .pyc files.
+The above invokes `rsync` with `-avz` (archive mode, verbose, compress). To 
+pass additional arguments to `rsync`, for example:
 
-    notifyloop ~/code/directory rsync -avz --exclude="*.pyc" ~/code/directory/ server.example.com:/stuff/
+    RSYNC_OPTS='--exclude="*.pyc"' autorsync . 192.168.1.127:/var/www
+
+To do the same thing "manually":
+
+    notifyloop . rsync -avz --exclude="*.pyc" . 192.168.1.127:/var/www
 
 
 ## Building from source
