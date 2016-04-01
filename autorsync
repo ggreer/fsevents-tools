@@ -9,5 +9,6 @@ fi
 WATCH_PATH="$1"
 shift
 DEST=("$@")
+rsync_opts=( $RSYNC_OPTS )
 
-notifyloop "$WATCH_PATH" rsync -avz "$WATCH_PATH" "${DEST[@]}"
+notifyloop "$WATCH_PATH" rsync -avz "${rsync_opts[@]}" "$WATCH_PATH" "${DEST[@]}"
